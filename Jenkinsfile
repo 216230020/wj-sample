@@ -11,8 +11,8 @@ pipeline {
         stage('Test Docker') {
             steps {
                 script {
-                    sh 'docker version'
-                    sh 'docker info'
+                    sh '/usr/bin/docker version'
+                    sh '/usr/bin/docker info'
                 }
             }
         }
