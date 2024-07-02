@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        PATH = "/usr/bin:$PATH"
+    }
+
     stages {
         stage('Webhook Test') {
             steps {
@@ -11,8 +15,8 @@ pipeline {
         stage('Test Docker') {
             steps {
                 script {
-                    sh '/usr/bin/docker version'
-                    sh '/usr/bin/docker info'
+                    sh 'docker version'
+                    sh 'docker info'
                 }
             }
         }
