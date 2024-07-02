@@ -7,9 +7,7 @@ pipeline {
                 echo 'Webhook triggered successfully!'
             }
         }
-    }
 
-    stages {
         stage('Test Docker') {
             steps {
                 script {
