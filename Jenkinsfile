@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Docker hub 레포지토리 이름
+        // Docker hub 레포지토리 이름 
         DOCKER_HUB_REPO = "1004joohyun/wj-sample"
         // Docker hub 자격증명 ID
         DOCKER_HUB_CREDENTIALS_ID = "docker-hub-credentials-id"
