@@ -30,6 +30,25 @@ pipeline {
                 }
             }
         }
+
+        stage('Build Docker Image') {   // 도커 이미지 빌드 단계 추가
+            steps {
+                script {
+                    sh 'docker build -t $DOCKER_HUB_REPO:$BUILD_NUMBER .'
+                }
+            }
+        }
+
+        stage('Push Docker Image') {   // 도커 이미지 푸시 단계 추가
+            steps {
+                script {
+                    withCredentials([string(credentialsId: "$DOCKER_HUB_CREDENTIALS_ID", variable: 'DOCKER_HUB_PASSWORD')]) { // Jenkins 자격 증명을 사용하여 Docker Hub에 로그인
+                        sh 'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_REPO --password-stdin' // Docker Hub에 로그인
+                        sh 'docker push $DOCKER_HUB_REPO:$BUILD_NUMBER' // 빌드된 Docker 이미지를 Docker Hub에 푸시
+                    }
+                }
+            }
+        }
     }
 
     post {
