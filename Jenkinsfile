@@ -2,20 +2,19 @@ pipeline {
     agent any
 
     environment {
-        // Docker hub 레포지토리 이름 
         DOCKER_HUB_REPO = "1004joohyun/wj-sample"
-        // Docker hub 자격증명 ID
         DOCKER_HUB_CREDENTIALS_ID = "docker-hub-credentials-id"
+        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin"
     }
 
     stages {
-        stage('Checkout') { // Jenkins가 자동으로 설정된 소스 코드를 체크아웃
+        stage('Checkout') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Build') { // Maven 프로젝트를 클린 빌드하고 패키지
+        stage('Build') {
             steps {
                 script {
                     sh './mvnw clean package'
@@ -23,17 +22,36 @@ pipeline {
             }
         }
 
-        stage('Test') {   // 셸 스크립트를 실행하여 Maven 테스트를 실행
+        stage('Test') {
             steps {
                 script {
-                    sh './mvnw test'   
+                    sh './mvnw test'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t $DOCKER_HUB_REPO:$BUILD_NUMBER .'
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: "$DOCKER_HUB_CREDENTIALS_ID", variable: 'DOCKER_HUB_PASSWORD')]) {
+                        sh 'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_REPO --password-stdin'
+                        sh 'docker push $DOCKER_HUB_REPO:$BUILD_NUMBER'
+                    }
                 }
             }
         }
     }
 
     post {
-        always { // 빌드 작업이 성공하든, 실패하든 상관 없이 항상 워크스페이스를 정리
+        always {
             cleanWs()
         }
     }
