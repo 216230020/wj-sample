@@ -7,10 +7,24 @@ pipeline {
     }
 
     stages {
-        stage('Webhook Test') {
+        stage('Checkout') {
             steps {
-                echo 'Webhook triggered successfully!'
+                checkout scm
             }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    sh './mvnw clean package'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
         }
     }
 }
