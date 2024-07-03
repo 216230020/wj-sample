@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_HUB_REPO = "1004joohyun/wj-sample"
         DOCKER_HUB_CREDENTIALS_ID = "docker-hub-credentials-id"
-        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin"
+        PATH = "/usr/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/sbin"
     }
 
     stages {
