@@ -11,14 +11,5 @@ pipeline {
                 echo 'Webhook triggered successfully!'
             }
         }
-
-        stage('Test Docker') {
-            steps {
-                script {
-                    sh 'docker version'
-                    sh 'docker info'
-                }
-            }
-        }
     }
 }
