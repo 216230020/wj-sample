@@ -3,8 +3,6 @@ pipeline {
 
     environment {
         DOCKER_HUB_REPO = "1004joohyun/wj-sample"
-        DOCKER_HUB_CREDENTIALS_ID = "dockerhub"
-        //DOCKERHUB_CREDENTIALS_ID = credentials('dockerhub') // jenkins에 등록해 놓은 docker hub credentials 이름
     }
 
     stages {
@@ -41,8 +39,8 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: "$DOCKER_HUB_CREDENTIALS_ID", variable: 'DOCKER_HUB_PASSWORD')]) {
-                        sh 'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_REPO --password-stdin'
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+                        sh 'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin'
                         sh 'docker push $DOCKER_HUB_REPO:$BUILD_NUMBER'
                     }
                 }
