@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_HUB_REPO = "1004joohyun/wj-sample"
         //DOCKER_HUB_CREDENTIALS_ID = "dockerhub"
-        DOCKERHUB_CREDENTIALS_ID = credentials('dockerhub') // jenkins에 등록해 놓은 docker hub credentials 이름!
+        DOCKERHUB_CREDENTIALS_ID = credentials('dockerhub') // jenkins에 등록해 놓은 docker hub credentials 이름
     }
 
     stages {
